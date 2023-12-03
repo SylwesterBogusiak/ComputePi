@@ -1,14 +1,14 @@
 // Gottfried Wilhelm Leibniz iterative algorithm for Pi approximation
-// PILL - PI LONG LEIBNIZ algorithm
+// CPILL - COMPUTE PI LONG LEIBNIZ algorithm
 //
 // Author: MARTE.BEST - Sylwester Bogusiak aka Sylvi91
 // This is free code to calculate pi to an arbitrary degree of precision.
 // There is no warranty or guarantee of any kind.
 // The mpfr library has further restrictions.
 // To Compile:
-// gcc -o pill pill.c -lmpfr
+// gcc -o cpill cpill.c -lmpfr
 // Usage:
-// ./pill 1000 1000
+// ./cpill 1000 1000
 
 #include <stdio.h>
 #include <mpfr.h> // for floating point mumbers
@@ -21,7 +21,7 @@
 #include <time.h>
 #endif
 
-int pill(char *stop, unsigned int *bt)
+int cpill(char *stop, unsigned int *bt)
 {
 
     /* Applying Classic Leibniz Formula */
@@ -119,7 +119,7 @@ int main(int argc, char * argv[]){
 	#endif
   	
   	// Run the main procedure.
- 	pill(i,&b);
+ 	cpill(i,&b);
 	 
 	 
 	// Get system time END 
