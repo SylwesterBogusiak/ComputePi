@@ -131,7 +131,7 @@ while(mpfr_cmpabs(i,n)<0)
     	mpfr_out_str (stdout, 10, *bt, pi, MPFR_RNDD);
     	printf ("\n===================\n\n");
         
-   
+   return 0;
 }
 
 
