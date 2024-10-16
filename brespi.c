@@ -1,22 +1,24 @@
-
-
 /*
-
  * BRESPI - BRESENHAM AND PI CIRCLES IN COLOURS OF R G B
- * This app is drawing 9 circles in 2 different techniques.
- * First circle in RED color is drawn with Bresenham's method
- * Second BLUE circle in drawn with use Pi number and sin() and cos() functions from math library or written with use Taylor-Maclaurin series, 
- * matched pixels only from this procedure are visible in GREEN, some other pixels are in WHITE.
  *
+ *
+ * This app is drawing circles in 2 different techniques.
+ * First circle in BLACK color is drawn with Bresenham method
+ * Second BLUE circle in drawn with use Pi number and sin() and cos() functions from math library or custom taylor_sin() taylor_cos() functions,
+ * Matched pixels to BLACK are visible in GREEN.
+ * Doubled pixels in BLUE are visible in RED.
+
+
  * Program is working in graphical mode from 320x200 pixels known from DOS time as 13h up to 1920x1080 pixels
  * The aim of this app is to see by eye layout of pixels which drawing these circles
  *
- * Golden Pi number = 3.1416407865 and GOLDEN MEAN and Fibonacci numbers and Golden number Phi=1.618033 are connected
+ * It's using 4 values of Pi to draw circles.
+ * 1) Canonical Pi value = 3.141592653589793238462643383279502884197 built in compiler, and known from Archimedes method and for example Brent Salamin formula
+ * 2) Golden Pi value =    3.1416407864998738178455042012387657412643710157669154345625383472 (Accoring to MARTE.BEST - Sylwester Bogusiak). FFCPI algo. More info https://github.com/SylwesterBogusiak/ComputePi | (6 * sqrt(Phi)) / 5; Are GOLDEN MEAN and Fibonacci numbers and Golden number Phi=1.618033 connected with Pi?
+ * 3) True Pi value =      3.1446055110296931442782343433718357180924882313508929506596078804 (According to JAIN 108 Academy) More info https://www.facebook.com/jain108academy | 4 * sqrt(phi); Relation to the golden number phi
+ * 4) New Pi value =       3.1464466094067262377995778189475754803575820311557629817058300655 (According to REDDIVARI) More info https://www.researchgate.net/publication/381044556 | (14 - sqrt(2)) / 4;
  *
- * Author: MARTE.BEST - Sylwester Bogusiak
- *
- *
- * Golden Pi number = 3.1416407865 and GOLDEN MEAN and Fibonacci numbers and Golden number Phi=1.618033 are connected
+ * To campare drawing methods this app is counting pixels in each of R G B colors and BLACK and WHITE. Please note that more pixels in R, G, B means better result.
  *
  * Author: MARTE.BEST - Sylwester Bogusiak
  *
@@ -63,6 +65,11 @@ time_t t;
 
     int SCREEN_w;
     int SCREEN_h;
+    int pixels_red = 0;
+    int pixels_green = 0;
+    int pixels_blue = 0;
+    int pixels_black = 0;
+    int pixels_white = 0;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,28 +78,31 @@ time_t t;
 
 int show_welcome_screen()
 {
-    textout_centre_ex(back_screen, font, " Welcome to BRESPI APP 0.2 (Beta).", SCREEN_w/2, 10, BLACK, -1);
+    textout_centre_ex(back_screen, font, " Welcome to BRESPI APP 0.4 (Beta).", SCREEN_w/2, 10, BLACK, -1);
     textout_centre_ex(back_screen, font, " Bresenham and Pi method to draw  ", SCREEN_w/2, 20, BLACK, -1);
     textout_centre_ex(back_screen, font, " circles in selected graphic mode.", SCREEN_w/2, 30, BLACK, -1);
     textout_centre_ex(back_screen, font, " ", 5, 40, BLACK, -1);
-    textout_centre_ex(back_screen, font, " Golden Pi = 3.14164078649987381...", SCREEN_w/2, 40, BLACK, -1);
-    textout_centre_ex(back_screen, font, " Canonical Pi = 3.14159265358979...", SCREEN_w/2, 50, BLACK, -1);
-    textout_centre_ex(back_screen, font, "  Mid Pi =(Golden Pi + Can Pi)/2   ", SCREEN_w/2, 60, BLACK, -1);
+    textout_centre_ex(back_screen, font, " Canonical Pi = 3.14159265358979...", SCREEN_w/2, 40, BLACK, -1);
+    textout_centre_ex(back_screen, font, " Golden Pi = 3.14164078649987381...", SCREEN_w/2, 50, BLACK, -1);
 
-    textout_centre_ex(back_screen, font, "                                   ", SCREEN_w/2, 70, BLACK, -1);
-    textout_centre_ex(back_screen, font, "  sin() and cos() from math lib    ", SCREEN_w/2, 80, BLACK, -1);
-    textout_centre_ex(back_screen, font, "   or as Taylor Maclaurin series   ", SCREEN_w/2, 90, BLACK, -1);
-    textout_centre_ex(back_screen, font, "                                   ", SCREEN_w/2, 100, BLACK, -1);
-    textout_centre_ex(back_screen, font, "    It's little bit of math.       ", SCREEN_w/2, 110, BLACK, -1);
-    textout_centre_ex(back_screen, font, "       Hope You enjoy it.          ", SCREEN_w/2, 120, BLACK, -1);
+    textout_centre_ex(back_screen, font, " True Pi = 3.1446055110296931442...", SCREEN_w/2, 60, BLACK, -1);
+    textout_centre_ex(back_screen, font, " New Pi = 3.14644660940672623779...", SCREEN_w/2, 70, BLACK, -1);
+    textout_centre_ex(back_screen, font, " Middle PI etc.                    " , SCREEN_w/2, 80, BLACK, -1);
+    textout_centre_ex(back_screen, font, " ", 5, 90, BLACK, -1);
+    textout_centre_ex(back_screen, font, "  sin() and cos() from math lib    ", SCREEN_w/2, 100, BLACK, -1);
+    textout_centre_ex(back_screen, font, "   or as Taylor Maclaurin series   ", SCREEN_w/2, 110, BLACK, -1);
+    textout_centre_ex(back_screen, font, "                                   ", SCREEN_w/2, 120, BLACK, -1);
+    textout_centre_ex(back_screen, font, "    It's little bit of math.       ", SCREEN_w/2, 130, BLACK, -1);
+    textout_centre_ex(back_screen, font, "       Hope You enjoy it.          ", SCREEN_w/2, 140, BLACK, -1);
 
 
 
 
-    textout_centre_ex(back_screen, font, "      Please press space.          ", SCREEN_w/2, 130, BLACK, -1);
-    textout_centre_ex(back_screen, font, "   Author: MARTE.BEST 2024 AD      ", SCREEN_w/2, 150, BLACK, -1);
+    textout_centre_ex(back_screen, font, "      Please press space.          ", SCREEN_w/2, 150, BLACK, -1);
 
-    textout_centre_ex(back_screen, font, "    Using Allegro 4.2 library      ", SCREEN_w/2, 160, BLACK, -1);
+    textout_centre_ex(back_screen, font, "   Author: MARTE.BEST 2024 AD      ", SCREEN_w/2, 170, BLACK, -1);
+
+    textout_centre_ex(back_screen, font, "    Using Allegro 4.2 library      ", SCREEN_w/2, 180, BLACK, -1);
 
     masked_stretch_blit(back_screen, screen, 0, 0, SCREEN_w, SCREEN_h, 0, 0, SCREEN_W, SCREEN_H);
 
@@ -170,7 +180,7 @@ int load_config()
     else
     {
 
-    set_config_file("brespi.ini");
+    set_config_file("data/brespi_config.ini");
 
     /* the gfx mode is stored like this:
     *    640  480 16
@@ -351,16 +361,16 @@ return cos; //cos;
 
 // Function for circle-generation using Bresenham's algorithm
 
-int bres_circle(long double xc,long double yc, long double scr_x, long double scr_y, long double zoom)
+int bres_circle(long double xc,long double yc, long double scr_x, long double scr_y, long double zoom, int max, double c)
 {
 
 
-    int c, i, color;
+    int i, color;
     long double r, ZOOM;
     long double x, y, err; /* II. Quadrant */
-    c = 1.0;
 
-for (i=1;i<=9;i++)  // 9 circles
+
+for (i=1;i<=max;i++)  // 9 circles at init
 {
  ZOOM = zoom*i;       // bigger circle
 
@@ -371,12 +381,17 @@ for (i=1;i<=9;i++)  // 9 circles
    y = 0;
    do {
 
-    color = RED;
+    color = BLACK;
 
       putpixel(back_screen, xc-x+scr_x, yc+y+scr_y, color); /*   I. Quadrant */
+      pixels_black +=1;
       putpixel(back_screen, xc-y+scr_x, yc-x+scr_y, color); /*  II. Quadrant */
+      pixels_black +=1;
       putpixel(back_screen, xc+x+scr_x, yc-y+scr_y, color); /* III. Quadrant */
+      pixels_black +=1;
       putpixel(back_screen, xc+y+scr_x, yc+x+scr_y, color); /*  IV. Quadrant */
+      pixels_black +=1;
+
       r = err;
       if (r <= y) err += ++y*2+1;           /* e_xy+e_y < 0 */
       if (r > x || err > y) err += ++x*2+1; /* e_xy+e_x > 0 or no 2nd y-step */
@@ -393,23 +408,23 @@ return 0;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// pi_circle() sin cos
 
-int pi_circle_0(long double xc,long double yc, long double scr_x, long double scr_y, long double zoom, long double pi)
+int pi_circle_0(long double xc,long double yc, long double scr_x, long double scr_y, long double zoom, long double pi, int max, double c)
 {
 
-long double c, x,y,r, theta;
+long double x,y,r, theta;
 int i;
-long double ti, ZOOM;
+long double ZOOM;
 int color;
-c=1.0;
 
-int angle;
 
-for (i=1;i<=9;i++)  // 9 circles
+long double angle;
+
+for (i=1;i<=max;i++)  // 9 circles at init
 {
 
 ZOOM = zoom*i;           // bigger circle
 r=c*ZOOM;
-    for(angle=0;angle<=360; angle++) //draw the circle of full 360 degrees angle
+    for(angle=0;angle<=360; angle+=0.1) //draw the circle of full 360 degrees angle
 
  {
 
@@ -418,27 +433,48 @@ r=c*ZOOM;
     x = xc + (r * cos(theta))+scr_x;
     y = yc + (r * sin(theta))+scr_y;
 
+//color = RED;
 
     color = getpixel(back_screen,x,y);
 
 
- if (color == RED)
- {
- color = GREEN;  // change color to GREEN if match 100%
- }
- else if (color == GREY)  // make sure is background color and put blue
-{
- color = BLUE;
-}
- else  if (color == BLUE) // check if this proc doubling pixels
-{
- color = BLUE;
-} else
-{
- color = WHITE;  // otherwise WHITE to check pixels (if no WHITE everything is 100% correct)
-}
 
-putpixel(back_screen,x,y,color);
+
+    if (color == BLACK) // BLACK
+    {
+    color = GREEN;   // change color to GREEN if matched 100%
+    pixels_green +=1;
+    pixels_black -=1;
+    putpixel(back_screen,x,y,color);
+    continue;
+    }
+
+    if (color == GREY) // GREY
+    {
+    color = BLUE;
+    pixels_blue +=1;
+    putpixel(back_screen,x,y,color);
+    continue;
+    }
+
+    if (color == BLUE) // BLUE
+    {
+    color = RED;
+    pixels_red +=1;
+    pixels_blue -=1;
+    putpixel(back_screen,x,y,color);
+    continue;
+    }
+
+    if ((color != WHITE) && (color != RED) && (color != GREEN) && (color != BLUE) && (color != BLACK)) // Check all possible colors
+    {
+    color = WHITE;
+    pixels_white +=1;
+    putpixel(back_screen,x,y,color);
+    continue;
+    }
+
+
 
  }
 
@@ -455,24 +491,24 @@ return 0;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// pi_circle() taylor sin cos
 
-int pi_circle_1(long double xc,long double yc, long double scr_x, long double scr_y, long double zoom, long double pi)
+int pi_circle_1(long double xc,long double yc, long double scr_x, long double scr_y, long double zoom, long double pi, int max, double c)
 {
 
-long double c, x,y,r, theta;
+long double x,y,r, theta;
 int i;
-long double ti, ZOOM;
+long double ZOOM;
 int color;
-c=1.0;
 
-int angle;
 
-for (i=1;i<=9;i++)  // 9 circles
+long double angle;
+
+for (i=1;i<=max;i++)  // 9 circles at intit
 {
 
 
 ZOOM = zoom*i;           // bigger circle
 r=c*ZOOM;
-    for(angle=0;angle<=360; angle++) //draw the circle of full 360 degrees angle
+    for(angle=0;angle<=360; angle+=0.1) //draw the circle of full 360 degrees angle
 
  {
 
@@ -486,23 +522,45 @@ r=c*ZOOM;
     color = getpixel(back_screen,x,y);
 
 
- if (color == RED)
- {
- color = GREEN;  // change color to GREEN if match 100%
- }
- else if (color == GREY)  // make sure is background color and put blue
-{
- color = BLUE;
-}
- else  if (color == BLUE) // check if this proc doubling pixels
-{
- color = BLUE;
-} else
-{
- color = WHITE;  // otherwise WHITE to check pixels (if no WHITE everything is 100% correct)
-}
 
-putpixel(back_screen,x,y,color);
+
+
+    if (color == BLACK) // BLACK
+    {
+    color = GREEN;   // change color to GREEN if matched 100%
+    pixels_green +=1;
+    pixels_black -=1;
+    putpixel(back_screen,x,y,color);
+    continue;
+    }
+
+    if (color == GREY) // GREY
+    {
+    color = BLUE;
+    pixels_blue +=1;
+    putpixel(back_screen,x,y,color);
+    continue;
+    }
+
+    if (color == BLUE) // BLUE
+    {
+    color = RED;
+    pixels_red +=1;
+    pixels_blue -=1;
+    putpixel(back_screen,x,y,color);
+    continue;
+    }
+
+    if ((color != WHITE) && (color != RED) && (color != GREEN) && (color != BLUE) && (color != BLACK)) // Check all possible colors
+    {
+    color = WHITE;
+    pixels_white +=1;
+    putpixel(back_screen,x,y,color);
+    continue;
+    }
+
+
+
 
  }
 
@@ -517,9 +575,9 @@ return 0;
 
 int change_res()
 {
-    int i,j=0, pos_y=20;
-
-   int colors[6] = {BLACK,BLACK,BLACK,BLACK,BLACK,BLACK};
+    int i, pos_y=20;
+    static int j=0;
+    int colors[6] = {BLACK,BLACK,BLACK,BLACK,BLACK,BLACK};
 
    start:
 
@@ -550,9 +608,6 @@ int change_res()
 
 
     textout_centre_ex(back_screen, font, "   Please press space to start.    ", SCREEN_w/2, 140, BLACK, -1);
-    textout_centre_ex(back_screen, font, "   Author: MARTE.BEST 2023 AD      ", SCREEN_w/2, 160, BLACK, -1);
-
-    textout_centre_ex(back_screen, font, "    Using Allegro 4.2 library      ", SCREEN_w/2, 170, BLACK, -1);
 
     masked_stretch_blit(back_screen, screen, 0, 0, SCREEN_w, SCREEN_h, 0, 0, SCREEN_W, SCREEN_H);
 
@@ -585,7 +640,7 @@ int change_res()
     SCREEN_w = 800;
     SCREEN_h = 600;
     j=2;
-    pos_y=50;
+    pos_y=70;
     goto start;
     }
      if(key[KEY_4])
@@ -593,7 +648,7 @@ int change_res()
     SCREEN_w = 1024;
     SCREEN_h = 768;
     j=3;
-    pos_y=60;
+    pos_y=80;
     goto start;
     }
      if(key[KEY_5])
@@ -601,7 +656,7 @@ int change_res()
     SCREEN_w = 1600;
     SCREEN_h = 900;
     j=4;
-    pos_y=80;
+    pos_y=90;
     goto start;
     }
      if(key[KEY_6])
@@ -650,7 +705,7 @@ int main(void)
     if (set_display_switch_mode(SWITCH_BACKGROUND)==-1) set_display_switch_mode(SWITCH_PAUSE);
 
 
-    /* clear the screen to white */
+    /* clear the screen to grey */
     clear_to_color(screen, GREY);
 
 
@@ -666,15 +721,17 @@ int main(void)
     };
 
 int pos_y;
+int max = 6; // qty of circles
+double dist = 1.0;
 int sin_cos_type = 0;
-
+int max_plus = 0, max_minus = 0;
     show_welcome_screen();
 
 
     long long int f;
 
 f = fact(36);
- printf(" Fact = %ld", f);
+ printf(" Fact = %lld", f);
 
 
 start:
@@ -686,9 +743,13 @@ long double zoom=9.0,scr_x,scr_y;
 long double xc,yc;
 long double pi;
 
+max = 6; // qty of circles
+dist = 1.0;
+
 scr_x=0.0;
 scr_y=0.0;
 pi = M_PI;
+sin_cos_type = 0;
 
 
 
@@ -697,8 +758,11 @@ while (1)
 
 {
 
-
-
+    pixels_black =0;
+    pixels_red =0;
+    pixels_green =0;
+    pixels_blue =0;
+    pixels_white =0;
 
     xc=SCREEN_w/2.0;
     yc=SCREEN_h/2.0;
@@ -707,15 +771,15 @@ while (1)
 
 
 
-    bres_circle(xc,yc,scr_x,scr_y,zoom);
+    bres_circle(xc,yc,scr_x,scr_y,zoom, max, dist);
 
     if (sin_cos_type == 1)
     {
-    pi_circle_0(xc,yc,scr_x,scr_y,zoom,pi);   // sequence is important sin cos math
+    pi_circle_0(xc,yc,scr_x,scr_y,zoom,pi, max, dist);   // sequence is important sin cos math
     }
     else if(sin_cos_type == 2)
     {
-    pi_circle_1(xc,yc,scr_x,scr_y,zoom,pi);   // sequence is important taylor sin cos
+    pi_circle_1(xc,yc,scr_x,scr_y,zoom,pi, max, dist);   // sequence is important taylor sin cos
     }
 
 
@@ -723,35 +787,57 @@ while (1)
     if (!key[KEY_I])
     {
     textout_centre_ex(back_screen,font,"Press I for more info",SCREEN_w/2,10,BLACK,-1);
-    }
-    if (sin_cos_type == 0)
+    textprintf_ex(back_screen,font,10,20,BLACK,-1," BLACK PX = %d",pixels_black);
+    textprintf_ex(back_screen,font,10,30,BLACK,-1," RED PX   = %d",pixels_red);
+    textprintf_ex(back_screen,font,10,40,BLACK,-1," GREEN PX = %d",pixels_green);
+    textprintf_ex(back_screen,font,10,50,BLACK,-1," BLUE PX  = %d",pixels_blue);
+    textprintf_ex(back_screen,font,10,60,BLACK,-1," R G B PX  = %d",pixels_red+pixels_green+pixels_blue);
+    textprintf_ex(back_screen,font,10,70,BLACK,-1," WHITE PX  = %d",pixels_white);
+
+       if (sin_cos_type == 0)
     {
-    textprintf_centre_ex(back_screen,font,SCREEN_w/2,SCREEN_h-pos_y,BLACK,-1," Bresenhamm's algorithm");
+    textprintf_centre_ex(back_screen,font,SCREEN_w/2,SCREEN_h-pos_y-20,BLACK,-1,"Bresenhamm's algorithm");
+    textprintf_centre_ex(back_screen,font,SCREEN_w/2,SCREEN_h-pos_y-10,BLACK,-1,"Press M or T to draw with sin() cos()");
     }
     else
     {
     textprintf_centre_ex(back_screen,font,SCREEN_w/2,SCREEN_h-pos_y,BLACK,-1," Pi = %0Lf",pi);
+    textprintf_centre_ex(back_screen,font,SCREEN_w/2,SCREEN_h-pos_y-10,BLACK,-1,"CX = %.2Lf, CY = %.2Lf",xc + scr_x , yc +scr_y );
+
     }
 
+
+
+
+    }
+
+
+
+
+
     if (key[KEY_I])  {
-    textout_ex(back_screen,font," 1 - Golden Pi",10,10,BLACK,-1);
-    textout_ex(back_screen,font," 2 - Canonical Pi",10,20,BLACK,-1);
-    textout_ex(back_screen,font," 3 - Middle Pi",10,30,BLACK,-1);
-    textout_ex(back_screen,font," M - sin() cos() MATH LIBRARY",10,40,BLACK,-1);
-    textout_ex(back_screen,font," T - sin() cos() TYLOR MACLAURIN",10,50,BLACK,-1);
-    textout_ex(back_screen,font," UP/DOWN - change Pi by 0.00000001",10,60,BLACK,-1);
-    textout_ex(back_screen,font," LEFT/RIGHT - zoom circles",10,70,BLACK,-1);
-    textout_ex(back_screen,font," A D S W - scroll circles",10,80,BLACK,-1);
-    textout_ex(back_screen,font," C - center circles",10,90,BLACK,-1);
-    textout_ex(back_screen,font," SPACE - ZOOM circles to 9.0",10,100,BLACK,-1);
-    textout_ex(back_screen,font," ENTER - BACK",10,110,BLACK,-1);
-    textout_ex(back_screen,font," ESC - EXIT",10,120,BLACK,-1);
+    textout_ex(back_screen,font," 1 - 7 Built in Pi values",10,10,BLACK,-1);
+    textout_ex(back_screen,font," M - sin() cos() MATH LIBRARY",10,20,BLACK,-1);
+    textout_ex(back_screen,font," T - sin() cos() TYLOR MACLAURIN",10,30,BLACK,-1);
+    textout_ex(back_screen,font," UP/DOWN - change Pi by 0.00001",10,40,BLACK,-1);
+    textout_ex(back_screen,font," LEFT/RIGHT - zoom circles",10,50,BLACK,-1);
+    textout_ex(back_screen,font," A D S W - scroll circles",10,60,BLACK,-1);
+    textout_ex(back_screen,font," C - center circles",10,70,BLACK,-1);
+    textout_ex(back_screen,font," SPACE - ZOOM circles to 9.0",10,80,BLACK,-1);
+    textout_ex(back_screen,font," ENTER - BACK",10,90,BLACK,-1);
+    textout_ex(back_screen,font," ESC - EXIT",10,100,BLACK,-1);
 
 
-    textout_ex(back_screen, font, " BLUE - PI METHOD", 10, 130, BLACK, -1);
-    textout_ex(back_screen, font, " RED - BRESENHAM METHOD", 10, 140, BLACK, -1);
-    textout_ex(back_screen, font, " GREEN - BOTH (MATCHED PIXELS)", 10, 150, BLACK, -1);
-    textout_ex(back_screen, font, " WHITE - UNKNOWN", 10, 160, BLACK, -1);
+    textout_ex(back_screen, font, " BLACK - BRESENHAM METHOD", 10, 110, BLACK, -1);
+    textout_ex(back_screen, font, " BLUE - PI METHOD", 10, 120, BLACK, -1);
+
+    textout_ex(back_screen, font, " GREEN - BOTH (BLACK MATCHED)", 10, 130, BLACK, -1);
+    textout_ex(back_screen, font, " RED - DOUBLED (BLUE MATCHED)", 10, 140, BLACK, -1);
+    textout_ex(back_screen, font, " F1 - ADD ONE CIRCLE", 10, 150, BLACK, -1);
+    textout_ex(back_screen, font, " F2 - SUBSTRACT ONE CIRCLE", 10, 160, BLACK, -1);
+    textout_ex(back_screen, font, " F3 - INCREASE RADIUS STEP", 10, 170, BLACK, -1);
+    textout_ex(back_screen, font, " F4 - DECREASE RADIUS STEP", 10, 180, BLACK, -1);
+
     };
 
    // acquire_screen();
@@ -762,11 +848,20 @@ while (1)
 
     // if (key[KEY_SPACE]) goto start;
 
-    if (key[KEY_1])  {pi = 3.1416407864998738178455042012387657412643710157669154345625383472;};  // Golden Pi computed with FCPI algo
 
-    if (key[KEY_2])  {pi = M_PI;}; // built-in value Canonical Pi
+    if (key[KEY_1])  {pi = M_PI; sin_cos_type = 1;}; // built-in value Canonical Pi = 3.141592653589793238462643383279502884197
 
-    if (key[KEY_3])  {pi = 3.14161672;}; // Middle Pi (Golden Pi + Canonical Pi) / 2
+    if (key[KEY_2])  {pi = 3.1416407864998738178455042012387657412643710157669154345625383472; sin_cos_type = 2;};  // Golden Pi computed with FCPI algo
+
+    if (key[KEY_3])  {pi = 3.1446055110296931442782343433718357180924882313508929506596078804; sin_cos_type = 2;}; // True Pi (According to JAIN 108 Academy) More info https://www.facebook.com/jain108academy | 4 * sqrt(phi); Relation to the golden number phi
+
+    if (key[KEY_4])  {pi = 3.1464466094067262377995778189475754803575820311557629817058300655; sin_cos_type = 2;}; // New Pi (According to REDDIVARI) More info https://www.researchgate.net/publication/381044556 | (14 - sqrt(2)) / 4;
+
+    if (key[KEY_5])  {pi = 3.1416167200448335281540737922591343127307702075710106277687414697; sin_cos_type = 2;}; // Middle 2 Pi (Golden Pi + Canonical Pi) / 2
+
+    if (key[KEY_6])  {pi = 3.142612984; sin_cos_type = 2;}; // Middle 3 Pi (3.144605511029693144+3.141640786499873817+3.141592653589793238) = 9.427838951 / 3 = 3.142612984
+
+    if (key[KEY_7])  {pi = 3.143123149; sin_cos_type = 2;}; // Middle 4 Pi (3.141640786499873817+3.144605511029693144) = 6.286246298 / 2 = 3.143123149
 
     //if (key[KEY_M])  {sin_cos_type = 1; pi = M_PI;}; // SIN COS MATH
 
@@ -776,9 +871,28 @@ while (1)
 
     if (key[KEY_T])  {sin_cos_type = 2;}; // SIN COS TAYLOR
 
-    if (key[KEY_UP]) {pi+=0.00000001; };
+    if (key[KEY_DOWN]) {pi-=0.00001; };
 
-    if (key[KEY_DOWN]) {pi-=0.00000001; };
+    if (key[KEY_UP]) {pi+=0.00001; };
+
+
+
+    if (max_minus == 0)
+    {
+    if (key[KEY_F1]) {max_minus=1; max-=1; };
+    }
+    if (!key[KEY_F1]) {max_minus=0;};
+
+    if (max_plus == 0)
+    {
+    if (key[KEY_F2]) {max_plus=1; max+=1; };
+    }
+
+    if (!key[KEY_F2]) {max_plus=0;};
+
+    if (key[KEY_F3]) {dist-=0.001; };
+
+    if (key[KEY_F4]) {dist+=0.001; };
 
     if (key[KEY_D]) {scr_x+=0.1; if (scr_x>SCREEN_w) scr_x=SCREEN_w; };
 
