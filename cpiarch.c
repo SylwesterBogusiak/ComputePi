@@ -1,6 +1,7 @@
 // Calculate the value of pi with use Archimedes method started from hexagon with side length equal to initiated radius value.
 // Program is comparing Archimedes Pi with MPFR Canonical Pi.
 
+
 // CPIARCH algorithm. Compute Pi - Archimedes algorithm
 
 // Author: MARTE.BEST - Sylwester Bogusiak aka Sylvi91
@@ -78,7 +79,7 @@ int cpiarch(char *stop, int radius, int decimals)
 
         mpfr_set(s1, r, MPFR_RNDN);  // side s1 of hex = radius
 
-	      mpfr_set_ui(six, 6, MPFR_RNDN);  // 6 sides
+	mpfr_set_ui(six, 6, MPFR_RNDN);  // 6 sides
 
         mpfr_set_ui(sixtimes, 6, MPFR_RNDN);  // 6 sides
 
@@ -86,27 +87,27 @@ int cpiarch(char *stop, int radius, int decimals)
 
         mpfr_div_ui(s2, s1, 2, MPFR_RNDN);  // half of the side if s1 = 1 => s2 = 0.5
 
-     	  mpfr_pow_ui(temp1, s2, 2, MPFR_RNDN); // s2 power to 2
+     	mpfr_pow_ui(temp1, s2, 2, MPFR_RNDN); // s2 power to 2
 
-    	  mpfr_pow_ui(pow_r, r, 2, MPFR_RNDN);
+    	mpfr_pow_ui(pow_r, r, 2, MPFR_RNDN);
 
-    	  mpfr_sub(temp2, pow_r, temp1, MPFR_RNDN);     // 1 -  (s/2)^2
+    	mpfr_sub(temp2, pow_r, temp1, MPFR_RNDN);     // 1 -  (s/2)^2
 
-    	  mpfr_sqrt(a, temp2, MPFR_RNDD);    // sqrt(1 - (s/2)^2)
+    	mpfr_sqrt(a, temp2, MPFR_RNDD);    // sqrt(1 - (s/2)^2)
 
- 	      mpfr_sub(b, r, a, MPFR_RNDD);     // 1 -  (s/2)^2  // 1 - 0.866
+ 	mpfr_sub(b, r, a, MPFR_RNDD);     // 1 -  (s/2)^2  // 1 - 0.866
 
-	      // From Pythagorean theorem we can find the new polygon news side lenght value
+	// From Pythagorean theorem we can find the new polygon news side lenght value
 
-    	  // news = sqrt(b^2 + s2^2)
+    	// news = sqrt(b^2 + s2^2)
 
-    	  mpfr_pow_ui(temp3, b, 2, MPFR_RNDN);    // b^2
+    	mpfr_pow_ui(temp3, b, 2, MPFR_RNDN);    // b^2
 
-	      mpfr_add(temp3, temp1, temp3, MPFR_RNDN);  // (s2^2+b^2)
+	mpfr_add(temp3, temp1, temp3, MPFR_RNDN);  // (s2^2+b^2)
 
-	      mpfr_sqrt(temp3,temp3,MPFR_RNDN);  // news
+	mpfr_sqrt(temp3,temp3,MPFR_RNDN);  // news
 
-	      mpfr_set(news, temp3, MPFR_RNDN); 
+	mpfr_set(news, temp3, MPFR_RNDN); 
 
  
         mpfr_mul_ui(div, r, 2, MPFR_RNDN);  // div = r * 2
@@ -131,49 +132,49 @@ int cpiarch(char *stop, int radius, int decimals)
 
        	mpfr_printf("n            ,");
 
-    	  mpfr_printf("s            ,");
+    	mpfr_printf("s            ,");
 
-    	  mpfr_printf("s/2          ,");
+    	mpfr_printf("s/2          ,");
 
-    	  mpfr_printf("a            ,");
+    	mpfr_printf("a            ,");
 
-    	  mpfr_printf("b            ,");
+    	mpfr_printf("b            ,");
 
-    	  mpfr_printf("new s        ,");
+    	mpfr_printf("new s        ,");
 
-    	  mpfr_printf("p (in)       ,");
+    	mpfr_printf("p (in)       ,");
 
-    	  mpfr_printf("p/d (in)     ,");
+    	mpfr_printf("p/d (in)     ,");
 
-    	  mpfr_printf("p (out)      ,");
+    	mpfr_printf("p (out)      ,");
 
-    	  mpfr_printf("p/d (out)     ");
+    	mpfr_printf("p/d (out)     ");
 
     
 
         mpfr_printf("\n");
 
-    	  mpfr_printf("%.0RNf,", sixtimes);
+    	mpfr_printf("%.0RNf,", sixtimes);
 
-    	  mpfr_printf("%.0RNf,", s1);
+    	mpfr_printf("%.0RNf,", s1);
 
-    	  mpfr_printf("%.6RZf,", s2);
+    	mpfr_printf("%.6RZf,", s2);
 
-    	  mpfr_printf("%.*RZf,", decimals, a);
+    	mpfr_printf("%.*RZf,", decimals, a);
 
-    	  mpfr_printf("%.*RZf,", decimals, b);
+    	mpfr_printf("%.*RZf,", decimals, b);
 
-    	  mpfr_printf("%.*RZf,", decimals, news);
+    	mpfr_printf("%.*RZf,", decimals, news);
 
-    	  mpfr_printf("%.*RZf,", decimals, pin);
+    	mpfr_printf("%.*RZf,", decimals, pin);
 
-    	  mpfr_printf("%.*RZf,", decimals, pdin);
+    	mpfr_printf("%.*RZf,", decimals, pdin);
 
-    	  mpfr_printf("%.*RZf,", decimals, pout);
+    	mpfr_printf("%.*RZf,", decimals, pout);
 
-    	  mpfr_printf("%.*RZf", decimals, pdout);
+    	mpfr_printf("%.*RZf", decimals, pdout);
 
-    	  mpfr_printf("\n");
+    	mpfr_printf("\n");
 
     
        	mpfr_set_si (i, 0, MPFR_RNDD);          // step
@@ -190,34 +191,34 @@ int cpiarch(char *stop, int radius, int decimals)
 
         mpfr_sub_si(i, i, 1, MPFR_RNDD); //// or add_si
 
-	      mpfr_mul_ui(sixtimes,sixtimes,2, MPFR_RNDN);  // 12  * 2 sides       
+	mpfr_mul_ui(sixtimes,sixtimes,2, MPFR_RNDN);  // 12  * 2 sides       
 
-	      mpfr_set(s1, news, MPFR_RNDN);     //
+	mpfr_set(s1, news, MPFR_RNDN);     //
 
-	      mpfr_div_d(s2, s1, 2.0, MPFR_RNDN);     // s2 half of the side s1
+	mpfr_div_d(s2, s1, 2.0, MPFR_RNDN);     // s2 half of the side s1
 
-	      mpfr_pow_ui(temp1, s2, 2, MPFR_RNDN); // temp1 power of 2
+	mpfr_pow_ui(temp1, s2, 2, MPFR_RNDN); // temp1 power of 2
 
-  	    mpfr_sub(temp2, pow_r, temp1, MPFR_RNDN);     // 1 -  (b/2)^2
+  	mpfr_sub(temp2, pow_r, temp1, MPFR_RNDN);     // 1 -  (b/2)^2
 
-	      mpfr_sqrt(a, temp2, MPFR_RNDN);    // sqrt(1 - (b/2)^2)
+	mpfr_sqrt(a, temp2, MPFR_RNDN);    // sqrt(1 - (b/2)^2)
 
-	      mpfr_sub(b, r, a, MPFR_RNDN);     // 1 -  sqrt(1 - (b/2)^2) // 1 - 0.866
-
-    
-    	  //From pythagorean theorem we can find the new polygon S/2 side lenght value
-
-    	  //news = sqrt(b^2 + s2^2)
-
-    	  mpfr_pow_ui(temp3, b, 2, MPFR_RNDN);    // b^2
-
-    	  mpfr_add(temp3, temp1, temp3, MPFR_RNDN); 
-
-    	  mpfr_sqrt(news,temp3,MPFR_RNDN);  // new s
+	mpfr_sub(b, r, a, MPFR_RNDN);     // 1 -  sqrt(1 - (b/2)^2) // 1 - 0.866
 
     
+    	//From pythagorean theorem we can find the new polygon S/2 side lenght value
 
-    	  // PIN Perimeter of inner polygon
+    	//news = sqrt(b^2 + s2^2)
+
+    	mpfr_pow_ui(temp3, b, 2, MPFR_RNDN);    // b^2
+
+    	mpfr_add(temp3, temp1, temp3, MPFR_RNDN); 
+
+    	mpfr_sqrt(news,temp3,MPFR_RNDN);  // new s
+
+    
+
+    	// PIN Perimeter of inner polygon
 
       	mpfr_mul(pin, sixtimes, s1, MPFR_RNDN);
 
@@ -230,15 +231,44 @@ int cpiarch(char *stop, int radius, int decimals)
 
       	mpfr_mul(pout, pin, temp1, MPFR_RNDN);
 
-     	  mpfr_div(pdout, pout, div, MPFR_RNDN);
+     	mpfr_div(pdout, pout, div, MPFR_RNDN);
 
       
 
-    	  /* Uncomment to print all results from the loop
+    	/* Uncomment to print all results from the loop
+
+    	mpfr_printf("%.0RNf,", sixtimes);
+
+    	mpfr_printf("%.0RNf,", s1);
+
+    	mpfr_printf("%.6RZf,", s2);
+
+    	mpfr_printf("%.*RZf,", decimals, a);
+
+    	mpfr_printf("%.*RZf,", decimals, b);
+
+    	mpfr_printf("%.*RZf,", decimals, news);
+
+    	mpfr_printf("%.*RZf,", decimals, pin);
+
+    	mpfr_printf("%.*RZf,", decimals, pdin);
+
+    	mpfr_printf("%.*RZf,", decimals, pout);
+
+    	mpfr_printf("%.*RZf", decimals, pdout);
+
+    	mpfr_printf("\n");
+
+    	  */
+
+    
+        }
 
     
 
-    	mpfr_printf("%.0RNf,", sixtimes);
+        /* Print out last result from the loop */
+
+        mpfr_printf("%.0RNf,", sixtimes);
 
     	mpfr_printf("%.0RNf,", s1);
 
@@ -264,53 +294,12 @@ int cpiarch(char *stop, int radius, int decimals)
 
     
 
-    	  */
-
-    
-
-    
-
-    
-
-
-        }
-
-    
-
-        /* Print out last result from the loop */
-
-        mpfr_printf("%.0RNf,", sixtimes);
-
-    	  mpfr_printf("%.0RNf,", s1);
-
-    	  mpfr_printf("%.6RZf,", s2);
-
-    	  mpfr_printf("%.*RZf,", decimals, a);
-
-    	  mpfr_printf("%.*RZf,", decimals, b);
-
-    	  mpfr_printf("%.*RZf,", decimals, news);
-
-    	  mpfr_printf("%.*RZf,", decimals, pin);
-
-    	  mpfr_printf("%.*RZf,", decimals, pdin);
-
-    	  mpfr_printf("%.*RZf,", decimals, pout);
-
-    	  mpfr_printf("%.*RZf", decimals, pdout);
-
-    	  mpfr_printf("\n");
-
-    
-
-    
-
         mpfr_const_pi(pi, MPFR_RNDN);  // MPFR Canonical Pi computed with Brent Salamin formula
 
 
-    	  mpfr_add(archimedespi, pdout, pdin, MPFR_RNDN); // Archimedes Pi (Outer Pi from polygon + Inner Pi from polygon) / 2
+    	mpfr_add(archimedespi, pdout, pdin, MPFR_RNDN); // Archimedes Pi (Outer Pi from polygon + Inner Pi from polygon) / 2
 
-    	  mpfr_div_d(archimedespi, archimedespi, 2.0, MPFR_RNDN); 
+    	mpfr_div_d(archimedespi, archimedespi, 2.0, MPFR_RNDN); 
 
   
         mpfr_printf("Final results for the polygon with n sides where n = %.0RZf:", sixtimes);
@@ -319,7 +308,7 @@ int cpiarch(char *stop, int radius, int decimals)
 
         mpfr_printf("MPFR Canonical Pi %.*RZf", decimals, pi);
 
-     	  mpfr_printf("\n");
+     	mpfr_printf("\n");
 
         mpfr_printf("Archimedes Pi     %.*RZf", decimals, archimedespi);
 
@@ -466,36 +455,35 @@ int main(int argc, char * argv[]) {
 
       	assert(i != NULL);
 
-    	  r = atoi(argv[2]);  // radius of the circle from 1 to MAX_LONG_INT
+    	r = atoi(argv[2]);  // radius of the circle from 1 to MAX_LONG_INT
 
-    	  assert( r >= 1);
+    	assert( r >= 1);
 
       	d = atoi(argv[3]);  // decimal places from 10 to 1000000 or more
 
-   	    assert( d >= 1);
+   	assert( d >= 1);
 
  
 
- 	      // Get system time START
+ 	// Get system time START
 
       	#ifdef __APPLE__
 
         uint64_t start = mach_absolute_time();
 
-    	  #else
+    	#else
 
         clock_t start = clock();
 
-    	  #endif
+    	#endif
 
  
-
         cpiarch(i, r, d);  // Change the argument i to adjust the number of iterations and change argument r to set radius of the circle and change argument d for decimal precision of the values of variables
 
     
- 	    // Get system time END
+ 	// Get system time END
 
-    	  #ifdef __APPLE__
+    	#ifdef __APPLE__
 
         uint64_t end = mach_absolute_time();
 
@@ -508,17 +496,19 @@ int main(int argc, char * argv[]) {
     
         printf("Your calculations took %.3Lf seconds to run.\n", diff / 1e9 );
 
-    	  #else
+    	#else
 
         clock_t end = clock();
 
         printf("Your calculations took %.3Lf seconds to run.\n", (long double)(end - start) / CLOCKS_PER_SEC );
 
-    	  #endif
+    	#endif
 
 
-    	  mpfr_free_cache ();
+    	mpfr_free_cache ();
 
     	return 0;
 
 }
+
+
