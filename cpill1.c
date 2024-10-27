@@ -1,12 +1,14 @@
-// Gottfried Wilhelm Leibniz iterative algorithm for Pi approximation
-// CPILL - COMPUTE PI LONG LEIBNIZ
+// Madhava–Leibniz, Gottfried Wilhelm Leibniz iterative algorithm for Pi approximation
+// CPILL1 - COMPUTE PI LONG LEIBNIZ V1
 //
 // Author: MARTE.BEST - Sylwester Bogusiak aka Sylvi91
 // This is free code to calculate pi to an arbitrary degree of precision.
 // There is no warranty or guarantee of any kind.
 // The mpfr library has further restrictions.
 // To Compile:
-// gcc -o cpill cpill.c -lmpfr
+// gcc -o cpill1 cpill1.c -lmpfr
+// Usage:
+// ./cpill1 1000 1000
 
 #include <stdio.h>
 #include <mpfr.h> // for floating point mumbers
@@ -20,7 +22,7 @@
 #endif
 
 
-int cpill(char *stop, unsigned int *bt){
+int cpill1(char *stop, unsigned int *bt){
 
 /* Applying Classic Leibniz Formula V1 */
     
@@ -52,7 +54,6 @@ int cpill(char *stop, unsigned int *bt){
 	mpfr_set_str (n3, stop, 10, MPFR_RNDD);
 	mpfr_sub_si(i2, n3, 1, MPFR_RNDD);
 	
-	
 
  while(mpfr_cmpabs(i3,i2)<0)
  
@@ -68,39 +69,34 @@ int cpill(char *stop, unsigned int *bt){
 
  }
   
-  
-    //Print out last - 1 answer
+    	//Print out last - 1 answer
     
-    mpfr_mul_si(pi3,sum3,4,MPFR_RNDD);
-    mpfr_printf ("\n===================\nPI for (n = %.*RZf): ",0,i2);
-    mpfr_out_str (stdout, 10, *bt, pi3, MPFR_RNDD);
-    printf ("\n===================\n\n");
+	mpfr_mul_si(pi3,sum3,4,MPFR_RNDD);
+    	mpfr_printf ("\n===================\nPI for (n = %.*RZf): ",0,i2);
+    	mpfr_out_str (stdout, 10, *bt, pi3, MPFR_RNDD);
+    	printf ("\n===================\n\n");
     
-  
-    //Print out last answer
+    	// Do one more step
+	
   	mpfr_add_si(i3, i3, 1, MPFR_RNDD);
-
 	mpfr_pow (power3, one3, x3, MPFR_RNDD);  
 	mpfr_mul(div3, two3, x3, MPFR_RNDD);  
 	mpfr_add_si(div3,div3,1,MPFR_RNDD);      
 	mpfr_div(term3,power3,div3,MPFR_RNDD);           
-
    	mpfr_add(sum3,sum3,term3,MPFR_RNDD);        
    	mpfr_add_si(x3, x3, 1, MPFR_RNDD);
-  
   	mpfr_mul_si(pi3,sum3,4,MPFR_RNDD);
   
-  
-  
-  
-    //Print put last answer
-    mpfr_printf ("\n===================\nPI for (n = %.*RZf): ",0,i3);
-    mpfr_out_str (stdout, 10, *bt, pi3, MPFR_RNDD);
-    printf ("\n===================\n\n");
-    
-    mpfr_clears (sum3, term3, pi3, i3, n3, x3, i2, one3,two3, power3, div3, div33, NULL);
 
-    return 0;
+    	//Print put last answer
+	
+    	mpfr_printf ("\n===================\nPI for (n = %.*RZf): ",0,i3);
+    	mpfr_out_str (stdout, 10, *bt, pi3, MPFR_RNDD);
+    	printf ("\n===================\n\n");
+    
+    	mpfr_clears (sum3, term3, pi3, i3, n3, x3, i2, one3,two3, power3, div3, div33, NULL);
+
+    	return 0;
 }
 
 
@@ -110,7 +106,7 @@ int main(int argc, char * argv[]){
 
 	char * i;
   	if (argc <= 2){
-    	printf ("Usage: %s <number of iterations> <number of bits>\n", argv[0]);
+    	printf ("Usage: %s <number of iterations> <decimals>\n", argv[0]);
     	return 1;
   	}
 
@@ -129,7 +125,7 @@ int main(int argc, char * argv[]){
 	#endif
   	
   	// Run the main procedure.
- 	cpill(i,&b);
+ 	cpill1(i,&b);
 	 
 	 
 	// Get system time END 
