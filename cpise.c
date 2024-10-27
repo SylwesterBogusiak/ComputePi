@@ -7,6 +7,8 @@
 // 
 // To Compile:
 // gcc -o cpise cpise.c -lm
+// Usage:
+// ./cpise 1000
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,19 +28,15 @@ int cpise(unsigned long long int iters)
 	long double sum=0.0;
 	long double pi=0.0;
 	
-	
-	
     
   	/* Applying Standard Euler's Formula */
       
         for (i=1; i<(iters-1); i++)
-    {
+    	{
        
-            sum += 1.0 / (pow(i, 2));
-            
-            
+        sum += 1.0 / (pow(i, 2));       
  
-    }
+    	}
 
   
         // print out last - 1 result
@@ -61,9 +59,6 @@ int cpise(unsigned long long int iters)
         printf ("\n===================\nPI for (n = %llu): ",i);
     	printf ("%.20Lf",pi);
     	printf ("\n===================\n\n");
-        
-    
-    
   
 }
 
@@ -71,12 +66,10 @@ int cpise(unsigned long long int iters)
 
 int main(int argc, char * argv[]){
 
-	
 
 	unsigned long long int i;
 	
 	char * pEnd;
-	
 	
   	if (argc != 2){
     	printf ("Usage: %s <number of iterations>\n", argv[0]);
