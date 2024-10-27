@@ -7,6 +7,8 @@
 // The mpfr library has further restrictions.
 // To Compile:
 // gcc -o cpile cpile.c -lmpfr
+// Usage:
+// ./cpile 1000 1000
 
 #include <stdio.h>
 #include <mpfr.h> // for floating point mumbers
@@ -79,7 +81,7 @@ int main(int argc, char * argv[]){
 
 	char * i;
   	if (argc <= 2){
-    	printf ("Usage: %s <number of iterations> <number of bits>\n", argv[0]);
+    	printf ("Usage: %s <number of iterations> <decimals>\n", argv[0]);
     	return 1;
   	}
 
