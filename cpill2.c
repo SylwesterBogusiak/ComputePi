@@ -1,4 +1,4 @@
-// Gottfried Wilhelm Leibniz iterative algorithm for Pi approximation
+// Madhava - Leibniz, Gottfried Wilhelm Leibniz iterative algorithm for Pi approximation.
 // CPILL2 - COMPUTE PI LONG LEIBNIZ V2
 //
 // Author: MARTE.BEST - Sylwester Bogusiak aka Sylvi91
@@ -7,6 +7,8 @@
 // The mpfr library has further restrictions.
 // To Compile:
 // gcc -o cpill2 cpill2.c -lmpfr
+// Usage:
+// ./cpill2 1000 1000
 
 #include <stdio.h>
 #include <mpfr.h> // for floating point mumbers
