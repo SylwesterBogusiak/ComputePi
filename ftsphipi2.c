@@ -76,7 +76,7 @@ int main(int argc, char * argv[]) {
    	assert( d >= 1);
   
 
-  // Get system time START
+  	// Get system time START
 
       	#ifdef __APPLE__
 
@@ -90,11 +90,11 @@ int main(int argc, char * argv[]) {
 
  
    
-  	ftsphipi2(d);  // Change the argument to adjust the number of iterations
+  	ftsphipi2(d);  // Change the argument to adjust the decimals
     
  
  
-  // Get system time END
+  	// Get system time END
 
     	#ifdef __APPLE__
 
