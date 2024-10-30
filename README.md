@@ -63,8 +63,10 @@ Euler's - CPILE - COMPUTE PI LONG EULER'S
 
 Madhava - CPILM - Compute Pi Long Madhava.
 
+Gauss-Legendre aka Brent-Salamin - CPIGLL - COMPUTE PI GAUSS-LEGENDRE LONG
 
-and for other Pi value related with Golden Ratio and Golden Phi number
+
+and for other Pi values related with Golden Ratio and Golden Number Phi
 
 FDSPHIPI algorithm - Four div by squared Phi - JAIN PI
 
@@ -87,7 +89,6 @@ Chudnovsky
 
 Bailey-Borwein-Plouffe
 
-Gauss-Legendre
 
 Other
 
